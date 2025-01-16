@@ -1,0 +1,119 @@
+#######################################
+# 🎮 Hyprland Config - Tailored for Omar
+# Focus: Stability, Modern Features, Gaming Visuals
+#######################################
+
+# 🚀 General Configuration
+monitor=*,preferred,auto
+layout=master
+layout gaps_in=10           # Inner gaps
+layout gaps_out=20          # Outer gaps
+
+# 🌐 Startup Applications
+exec-once = hyprctl dispatch exec btop             # Auto-open btop on a workspace
+exec-once = ./scripts/wallpaper_changer.sh         # Auto-run wallpaper changer script
+exec-once = firefox                                 # Auto-launch Firefox on startup
+exec-once = mate-terminal &                        # Auto-start terminal
+
+# 📏 Cursor Settings
+input {
+    natural_scroll yes
+    sensitivity 1.0
+    acceleration_profile flat
+}
+
+# 🖥️ Display Configuration
+vrr = on                # Enable VRR (Variable Refresh Rate)
+damage_tracking = full  # Optimize for stability
+
+#######################################
+# 🎨 Visual Features (Gaming Theme)
+#######################################
+decoration {
+    rounding 12                        # Rounded corners
+    drop_shadow yes                    # Shadows for windows
+    blur_enabled yes                   # Enable blur
+    blur_strength 0.8                  # Adjust blur intensity
+    active_opacity 0.95                # Transparency for active windows
+    inactive_opacity 0.75              # Transparency for inactive windows
+    border_size 3                      # Window border size
+    animation speed=1.0,style=bezier   # Smooth animations
+}
+
+# 🎨 Colors (Gaming-Inspired)
+col.active.border = 0xFFADFF2F       # Neon green for active borders
+col.inactive.border = 0xFF696969     # Gray for inactive borders
+col.background = 0x222831           # Dark slate gray background
+col.shadow = 0x88000000             # Soft black shadows
+
+#######################################
+# 🔑 Keybindings (Searchable System)
+#######################################
+# 🔑 Modifiers
+$mod = SUPER
+$alt = ALT
+
+# 🖥️ Workspaces
+bind = $mod+1, workspace 1
+bind = $mod+2, workspace 2
+bind = $mod+3, workspace 3
+bind = $mod+4, workspace 4
+bind = $mod+Tab, workspace next
+bind = $mod+Shift+Tab, workspace prev
+
+# 📂 Applications
+bind = $mod+Return, exec mate-terminal    # Launch terminal
+bind = $mod+W, exec firefox               # Launch Firefox
+bind = $mod+E, exec ranger                # File manager
+bind = $mod+Q, killactive                 # Close active window
+bind = $mod+M, exec hyprctl dispatch exit # Exit Hyprland
+
+# 🖼️ Random Wallpaper
+bind = $mod+Shift+W, exec ./scripts/random_wallpaper.sh
+
+# 📋 System Controls
+bind = $mod+Shift+R, exec hyprctl reload        # Reload config
+bind = $mod+Shift+X, exec systemctl poweroff    # Shutdown
+bind = $mod+Shift+S, exec systemctl suspend     # Suspend
+
+#######################################
+# 🖥️ Workspace Automation
+#######################################
+workspace {
+    name = 1 "🌐 Web"
+    name = 2 "📂 Files"
+    name = 3 "🔧 Dev"
+    name = 4 "🎮 Games"
+}
+
+# Auto-assign applications to workspaces
+windowrule = workspace 1, class:firefox
+windowrule = workspace 3, class:code
+windowrule = workspace 4, title:Steam
+
+#######################################
+# 🖼️ Wallpaper Management (Hyprpaper)
+#######################################
+exec-once = hyprpaper &
+wallpaper = eDP-1, ~/wallpapers/default.jpg  # Set default wallpaper
+exec-once = ./scripts/random_wallpaper.sh    # Random wallpaper script
+
+#######################################
+# 🔍 Debugging & Logging
+#######################################
+# Log errors and reload Hyprland when configuration fails
+error_notification = notify-send "Hyprland Error" "Check your config and reload!"
+
+#######################################
+# 🌟 Advanced Features
+#######################################
+# Power Management
+exec-once = tlp start            # Start TLP for power optimization
+
+# Driver Integration
+exec-once = ./scripts/driver_manager.sh
+
+#######################################
+# 🛡️ Backup & Self-Healing
+#######################################
+exec-once = ./scripts/config_backup.sh    # Backup current config before edits
